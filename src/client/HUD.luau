@@ -82,8 +82,9 @@ local BADGES = {
 	end,
 }
 
--- Pastille de ressource : icone qui deborde a gauche et montant
+-- Pastille de ressource : icone qui deborde a gauche et montant, separes par un espace net
 local function pill(parent: Instance, order: number, iconName: string, height: number, color: Color3)
+	local inset = math.floor(height * 1.3) + 10
 	local frame = UI.create("Frame", {
 		LayoutOrder = order,
 		Size = UDim2.fromOffset(0, height),
@@ -94,12 +95,13 @@ local function pill(parent: Instance, order: number, iconName: string, height: n
 	}, {
 		UI.corner(),
 		UI.stroke(Theme.Outline, 3),
-		UI.create("UIPadding", { PaddingLeft = UDim.new(0, height + 6), PaddingRight = UDim.new(0, 16) }),
+		UI.create("UIPadding", { PaddingLeft = UDim.new(0, inset), PaddingRight = UDim.new(0, 16) }),
 	})
 	frame:FindFirstChildOfClass("UIStroke").Color = color:Lerp(Theme.Outline, 0.75)
+	-- Position comptee depuis le debut du texte (apres le retrait) : l'icone reste au bord gauche
 	UI.icon(iconName, {
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		Position = UDim2.new(0, -height / 2 - 4, 0.5, 0),
+		Position = UDim2.new(0, height / 2 + 2 - inset, 0.5, 0),
 		Size = UDim2.fromOffset(height * 1.35, height * 1.35),
 		ZIndex = 3,
 		Parent = frame,
@@ -124,7 +126,7 @@ local function buildWallet(gui: ScreenGui)
 		Size = UDim2.fromOffset(260, 400),
 		BackgroundTransparency = 1,
 		Parent = gui,
-	}, { UI.create("UIListLayout", { Padding = UDim.new(0, 10), SortOrder = Enum.SortOrder.LayoutOrder }) })
+	}, { UI.create("UIListLayout", { Padding = UDim.new(0, 14), SortOrder = Enum.SortOrder.LayoutOrder }) })
 	UI.autoScale(column)
 	UI.create("UIPadding", { PaddingLeft = UDim.new(0, 6), Parent = column })
 
